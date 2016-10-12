@@ -1,0 +1,57 @@
+submitify.io
+
+Your one stop shop for project ideas in this class
+
+API -- list of actions we can take on the site
+
+
+GET /
+	View the home page
+	HTML
+
+GET /about
+	View the "about this project" page
+
+GET /login
+	View login page
+
+GET /api/projects
+	Get a list of projects
+	JSON
+
+POST /api/project
+	Send a new project to the website
+	JSON
+
+Get /api/project/:id
+	Retrieve Details for project with id :id
+	JSON
+
+POST /api/vote
+	Send {id: project id} to increase format
+	JSON
+
+POST /api/login
+	Send {username, password}
+	JSON
+
+POST /api/signup 
+	Send {username, password}
+	JSON
+
+
+
+
+Project:
+	name: string,
+	votes: [user_id],
+	description: string,
+	author: user_id
+
+User:
+	name: string,
+	password: string,
+	id: string,
+	email: strings
+
+var users= [1, 2, 3, 4, 5];
