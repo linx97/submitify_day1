@@ -11,6 +11,7 @@
 	HTML element that we can append to the page later).
 */
 function createProjectHMTL(project) {
+	console.log(project);
 	// clone the template
 	var projectDiv = $('#project_template').clone();
 	// remove the id (only one thing with each id)
@@ -20,6 +21,8 @@ function createProjectHMTL(project) {
 	projectDiv.find(".project_author").text(project.author);
 	projectDiv.find(".project_description").text(project.description);
 	projectDiv.find(".project_votes").text(project.votes.length);
+	// show this clone of the template (template is hidden by default)
+	projectDiv.show();
 	// set vote button to add to votes & refresh display
 	projectDiv.find(".vote").click(function() {
 		$.post('/api/vote', {name: project.name}, function(res) {
@@ -30,8 +33,6 @@ function createProjectHMTL(project) {
 			}
 		});
 	});
-	// show this clone of the template (template is hidden by default)
-	projectDiv.show();
 	// return a reference to the clone
 	return projectDiv;
 }
@@ -42,7 +43,9 @@ function createProjectHMTL(project) {
 		"No projects!". Otherwise we build the projects into HTML and display
 		them on the page.
 	*/
+
 function showProjects() {
+	$("#projects").text("");
 	$.get('/api/projects', function(res) {
 		// res here is what we ("res.send") on the backend
 		if (res.length === 0) {
@@ -50,7 +53,7 @@ function showProjects() {
 		} else {
 			for (var i in res) {
 				// for-in, since for-of sometimes doesn't work on frontend
-				$('#projects').text(createProjectHMTL(res[i]));
+				$('#projects').append(createProjectHMTL(res[i]));
 			}
 		}
 	}, 'json'); //'json' = auto parse as json
