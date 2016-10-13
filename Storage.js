@@ -23,15 +23,11 @@ function Storage() {
 	};
 
 	this.getProjectByName = (name, cb) => {
-		var project;
-
 		for (var i of projects) {
 			if (i.name === name) {
-				project = i;
+				cb(i);
 			}
 		}
-
-		cb(project);
 	};
 }
 

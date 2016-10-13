@@ -24,12 +24,13 @@ function createProjectHMTL(project) {
 	// show this clone of the template (template is hidden by default)
 	projectDiv.show();
 	// set vote button to add to votes & refresh display
-	projectDiv.find(".vote").click(function() {
+	var button = projectDiv.find(".vote");
+	button.click(function() {
 		$.post('/api/vote', {name: project.name}, function(res) {
 			if (res === "Success!") {
 				showProjects();
 			} else {
-				alert(res);
+				button.attr('disabled',true);
 			}
 		});
 	});
