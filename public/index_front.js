@@ -19,32 +19,30 @@ function createProjectHMTL(project) {
 	projectDiv.find(".project_name").text(project.name);
 	projectDiv.find(".project_author").text(project.author);
 	projectDiv.find(".project_description").text(project.description);
-	// show this clone of the template (template is hidden by default)
 	projectDiv.find(".project_votes").text(project.votes.length);
+	// set vote button to add to votes & refresh display
 	projectDiv.find(".vote").click(function() {
-		console.log(project.votes);
 		$.post('/api/vote', {name: project.name}, function(res) {
 			if (res === "Success!") {
-				getProjects();
+				showProjects();
+			} else {
+				alert(res);
 			}
 		});
 	});
+	// show this clone of the template (template is hidden by default)
 	projectDiv.show();
 	// return a reference to the clone
 	return projectDiv;
 }
 
-// console.log(res);
-// 			var votes = res.votes.length;
-// 			console.log(votes);
-// 			$('#' + project.name).text(votes);
-
 /*
-	On page load...
-*/
-
-function getProjects() {
-	$("#projects").text("");
+		Get all of the projects from the server via AJAX. Uses the
+		"/api/projects" endpoint. If the response is an empty array, display
+		"No projects!". Otherwise we build the projects into HTML and display
+		them on the page.
+	*/
+function showProjects() {
 	$.get('/api/projects', function(res) {
 		// res here is what we ("res.send") on the backend
 		if (res.length === 0) {
@@ -52,22 +50,19 @@ function getProjects() {
 		} else {
 			for (var i in res) {
 				// for-in, since for-of sometimes doesn't work on frontend
-				$('#projects').append(createProjectHMTL(res[i]));
+				$('#projects').text(createProjectHMTL(res[i]));
 			}
 		}
 	}, 'json'); //'json' = auto parse as json
-	}
+}
+
+/*
+	On page load...
+*/
 
 $(document).ready(function() {
 
-	/*
-		Get all of the projects from the server via AJAX. Uses the
-		"/api/projects" endpoint. If the response is an empty array, display
-		"No projects!". Otherwise we build the projects into HTML and display
-		them on the page.
-	*/
-
-	getProjects();
+	showProjects();
 
 	/*
 		When we click on the "send new project" button...

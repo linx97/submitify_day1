@@ -42,7 +42,6 @@ app.get("/", (req, res) => {
 // responds with, as JSON, all of the projects currently in storage.
 app.get("/api/projects", (req, res) => {
 	storage.getAllProjects((projects) => {
-		console.log(projects, "hi");
 		res.send(projects);
 	});
 });
@@ -61,17 +60,23 @@ app.post("/api/project", (req, res) => {
 	});
 });
 
+// testing
 var users = [1, 2, 3, 4, 5, 6, 7];
 
-
+// sets up handler to respone to a POST to /api/vote 
+// takes user name and updates project vote if user hasn't voted yet
+// returns either success or fail
 app.post("/api/vote", (req, res) => {
 	var randomUser = users[Math.floor(Math.random() * users.length)];
 	
 	storage.getProjectByName(req.body.name, (project) => {
-
-		project.addVote(randomUser);
-		console.log(project);
-		res.send("Success!");
+		if (!project.votes.includes(randomUser)) {
+			project.addVote(randomUser);
+			console.log(project);
+			res.send("Success!");
+		} else {
+			res.send("You've already voted for this project!");
+		}
 	});
 });
 
